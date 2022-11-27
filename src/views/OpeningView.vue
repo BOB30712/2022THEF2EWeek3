@@ -1,12 +1,12 @@
 <template>
-    <div class="opening position-relative">
+    <div @click="moveoutEmp" class="opening position-relative" >
         <img class="emp1 position-absolute" src="../assets/img/職員1.png" alt="">
         <img class="emp2 position-absolute" src="../assets/img/職員2.png" alt="">
         <img class="emp3 position-absolute" src="../assets/img/職員3.png" alt="">
         <img class="emp4 position-absolute" src="../assets/img/職員4.png" alt="">
         <div class="title flex-column d-flex align-items-center">
             <div class="title2"></div>
-            <img @click="moveoutEmp" src="../assets/img/任點擊開始.png" alt="">
+            <img src="../assets/img/任點擊開始.png" alt="">
         </div>
     </div>
 </template>
@@ -16,15 +16,29 @@ import { gsap } from 'gsap'
 export default {
   methods: {
     moveoutEmp () {
-      gsap.to('.emp1', { bottom: '-50%', duration: 2 })
-      gsap.to('.emp2', { top: '-50%', duration: 2 })
-      gsap.to('.emp3', { top: '-50%', duration: 2 })
-      gsap.to('.emp4', { bottom: '-50%', duration: 2 })
-      this.$router.push('/CastingView')
+      const timeline = gsap.timeline()
+      timeline.to('.emp1', { bottom: '-70%', duration: 2 })
+      timeline.to('.emp2', { top: '-50%', duration: 2 }, '<')
+      timeline.to('.emp3', { top: '-50%', duration: 2 }, '<')
+      timeline.to('.emp4', { bottom: '-70%', duration: 2 }, '<')
+      timeline.to('.opening', { xPercent: '-100', duration: 2 })
+      this.move()
+    },
+    move () {
+      return new Promise(() => {
+        setTimeout(() => {
+          this.$router.push('/CastingView')
+        }, 4000)
+      })
     }
   },
   mounted () {
-    gsap.fromTo('.emp1', { left: '50%' }, { left: '5%', repeat: 2 })
+    const timeline = gsap.timeline()
+    timeline.fromTo('.emp1', { yPercent: '100', xPercent: '-100' }, { yPercent: '0', xPercent: '0', duration: 1.5 })
+    timeline.fromTo('.emp3', { yPercent: '-100', xPercent: '100' }, { yPercent: '0', xPercent: '0', duration: 1.5 }, '<')
+    timeline.fromTo('.emp2', { yPercent: '-100', xPercent: '-100' }, { yPercent: '0', xPercent: '0', duration: 1.5 })
+    timeline.fromTo('.emp4', { yPercent: '100', xPercent: '100' }, { yPercent: '0', xPercent: '0', duration: 1.5 }, '<')
+    timeline.fromTo('.title', { yPercent: '-200' }, { yPercent: '0', duration: 2 })
   }
 }
 </script>
@@ -37,6 +51,7 @@ export default {
     background-size:cover;
     overflow: hidden;
     height: 100vh;
+    cursor: pointer;
 }
 .title{
     text-align: center;

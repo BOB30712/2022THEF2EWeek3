@@ -31,7 +31,10 @@
                 <img src="../assets/img/職員4-grad.png" alt="">
             </div>
         </div>
-        <button @click="toImage" type="button" class="btn btn-primary position-absolute top-0 end-0">我完成了</button>
+        <div class="position-absolute" style="top:10%;right: 8%;">
+            <img style="cursor: pointer;" @click="this.$router.push('/')" src="../assets/img/回首頁.png" alt="">
+            <img style="cursor: pointer;" @click.prevent="toImage" src="../assets/img/截圖.png" alt="">
+        </div>
     </div>
 </template>
 

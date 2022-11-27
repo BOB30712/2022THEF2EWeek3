@@ -18,17 +18,21 @@
         <div class="dialog-exam position-relative pt-3">
             <p class="fw-bold">產品待辦清單 ProductBacklog</p>
             <p style="color:#CFC8C4;font-size:20px;">優先度高<i class="bi bi-arrow-up"></i></p>
-            <div style="height: 300px;top:50%;left: -30%;" class="candidate position-absolute  translate-middle">
+            <div style="top:50%;left: -30%;" class="candidate position-absolute  translate-middle">
                 <div data-id="1" class="product text-nowrap d-flex align-items-center justify-content-center">會員系統（登入、註冊、管理)）</div>
+            </div>
+            <div style="top:30%;left: 120%;" class="candidate2 position-absolute  translate-middle">
                 <div data-id="2" class="product text-nowrap d-flex align-items-center justify-content-center">後台職缺管理功能（資訊上架、下架、顯示應徵者資料）</div>
+            </div>
+            <div style="top:70%;left: 120%;" class="candidate3 position-absolute  translate-middle">
                 <div data-id="3" class="product text-nowrap d-flex align-items-center justify-content-center">前台職缺列表（缺詳細內容、點選可發送應徵意願）</div>
                 <div data-id="4" class="product text-nowrap d-flex align-items-center justify-content-center">應徵者的線上履歷編輯器</div>
             </div>
             <div style="height: 300px;" class="productBacklog d-flex flex-column justify-content-center align-items-center">
-                <div data-id="0" :class="{'d-none':one>=5}" class="product2"></div>
-                <div data-id="0" :class="{'d-none':one>=6}" class="product2"></div>
-                <div data-id="0" :class="{'d-none':one>=7}" class="product2"></div>
-                <div data-id="0" :class="{'d-none':one>=8}" class="product2"></div>
+                <div data-id="0"  class="product2 dsahblock"></div>
+                <div data-id="0"  class="product2 dsahblock"></div>
+                <div data-id="0"  class="product2 dsahblock"></div>
+                <div data-id="0"  class="product2 dsahblock"></div>
             </div>
             <p style="color:#CFC8C4;font-size:20px;">優先度低<i class="bi bi-arrow-down"></i></p>
             <div class="d-flex justify-content-center">
@@ -43,15 +47,16 @@
           <div class="Smalltest-dialog position-absolute top-50 start-50 translate-middle">
             <div style="text-align:start;">
               <p class="mb-5 fw-bold">
-                <span v-if="!testisOK">嘿!{{userName}}</span>
+                <span v-if="!testisOK||!error">嘿!{{userName}}</span>
                 <span v-else>恭喜你/妳啊!{{userName}}</span></p>
               <p class="mb-5 fw-bold">
                 <span v-if="!testisOK">尚未完成題目喔</span>
+                <span v-else-if="!error">順序有錯喔，在試試看吧</span>
                 <span v-else>太棒了!前往下一步吧</span>
               </p>
               <div class="d-flex justify-content-end">
-                <button v-if="testisOK" @click="this.$router.push('/GradView')" class="Smalltest-OK">下一步<i class="bi bi-skip-start-fill"></i></button>
-                <button v-else @click.prevent="closedialog" class="Smalltest-OK">讓我再試試<i class="bi bi-skip-start-fill"></i></button>
+                <button v-if="testisOK&&error" @click="this.$router.push('/GradView')" class="Smalltest-OK">下一步<i class="bi bi-skip-start-fill"></i></button>
+                <button v-else-if="!error" @click.prevent="closedialog" class="Smalltest-OK">讓我再試試<i class="bi bi-skip-start-fill"></i></button>
               </div>
             </div>
           </div>
@@ -74,9 +79,10 @@ export default {
     return {
       one:4,
       userName: '',
-      ansArray:['0','1','2','3','4','0','0','0'],
+      ansArray:['1','2','3','4'],
       dataArray:[],
-      testisOK: false
+      testisOK: false,
+      error:false,
     }
   },
   components: {
@@ -84,10 +90,11 @@ export default {
   },
   methods: {
     isEqual(arr1,arr2){
+      this.testisOK = true
         if(arr1.join('')==arr2.join('')){
-            this.testisOK = true
+            this.error = true
         }else{
-            this.testisOK = false
+            this.error = false
         }
     },
     opendialog () {
@@ -101,6 +108,12 @@ export default {
       timeline.to('.emp2-name',{ display: 'none' })
       timeline.to('.emp2-1',{ yPercent: '100' })
       timeline.to('.Smalltest-big-dialog', { display: 'none' })
+    },
+    closedsahblock (num) {
+      if(num>4){
+        var SecondPara = document.querySelector(`.dsahblock`)
+        SecondPara.remove()
+      }
     },
     moveOut () {
       const timeline = gsap.timeline()
@@ -118,8 +131,16 @@ export default {
     gsap.to('.dialog-topic', { yPercent: '-2000' })
     gsap.to('.dialog-exam', { yPercent: '200' })
     const candidateDOM = document.querySelector(".candidate");
+    const candidateDOM2 = document.querySelector(".candidate2");
+    const candidateDOM3 = document.querySelector(".candidate3");
     const productBacklogDOM = document.querySelector(".productBacklog")
     var candidate = Sortable.create(candidateDOM, {
+        group: "shart"
+    })
+    var candidate2 = Sortable.create(candidateDOM2, {
+        group: "shart"
+    })
+    var candidate3 = Sortable.create(candidateDOM3, {
         group: "shart"
     })
     var productBacklog = Sortable.create(productBacklogDOM, {
@@ -128,9 +149,18 @@ export default {
         onChange: () => {
           let order = productBacklog.toArray()
           this.dataArray = order
+          this.one = order.length
+          this.closedsahblock (this.one)
           this.isEqual(this.dataArray,this.ansArray)
           console.log(this.dataArray.join(''),this.ansArray.join(''))
+        },
+        onAdd: () => {
+          let order = productBacklog.toArray()
+          this.dataArray = order
           this.one = order.length
+          this.closedsahblock (this.one)
+          this.isEqual(this.dataArray,this.ansArray)
+          console.log(this.dataArray.join(''),this.ansArray.join(''))
         }
     })
   }

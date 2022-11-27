@@ -1,9 +1,8 @@
 <template>
-    <div class="position-relative" style="overflow: hidden;">
-        <p class="chooseChar fw-bold">請選擇代表你的角色。</p>
+    <div class="position-relative" style="overflow: hidden;height: 100vh;">
+        <p class="chooseChar fw-bold mt-5">請選擇代表你的角色。</p>
         <div class="d-flex justify-content-center align-items-end mb-5">
             <div class="position-relative">
-              <p :class="{'d-none':choosechar1}" class="position-absolute start-50 translate-middle" style="top:25%;font-size:37px;font-weight:700;color:#FFFFFF;">? ? ?</p>
               <img style="width: 220px;height: 382px;"
                   @mouseenter="char1 = require('../assets/img/主角1.png')"
                   @click="chooseChar1"
@@ -12,7 +11,6 @@
             </div>
             <div style="width: 268px;height: 10px;"></div>
             <div class="position-relative">
-              <p :class="{'d-none':choosechar2}" class="position-absolute start-50 translate-middle" style="top:27%;font-size:37px;font-weight:700;color:#FFFFFF;">? ? ?</p>
               <img style="width: 220px;height: 410px;"
                   @mouseenter="char2 = require('../assets/img/主角2.png')"
                   @click="chooseChar2"
@@ -20,7 +18,7 @@
                   :src="char2" alt="">
             </div>
         </div>
-        <form @submit="Next">
+        <form @submit.prevent="Next">
             <div class="mb-3 d-flex justify-content-center">
                 <input v-model="userName" type="text" class="inputName" placeholder="請輸入您的名字">
             </div>
@@ -34,7 +32,7 @@
                 <span v-else>嘿!菜鳥</span></p>
               <p class="mb-5 fw-bold">
                 <span v-if="!userName">不打算報上名嗎？<br></span>
-                <span v-if="!userChar">還沒選擇自己的長相？</span>
+                <span v-if="!userChar">還沒選好性別嗎?</span>
                 <span v-if="userChar&&userName">準備好了就開始下一步吧</span>
               </p>
               <div class="d-flex justify-content-end">
@@ -43,8 +41,8 @@
               </div>
             </div>
           </div>
-          <img class="emp2-1 position-absolute" src="../assets/img/職員2-1.png" alt="">
-          <div class="emp2-name position-absolute">
+          <img class="emp2-Casting position-absolute" src="../assets/img/職員2-1.png" alt="">
+          <div class="emp2-Casting-name position-absolute">
               <p class="mb-0">? ? ?</p>
           </div>
         </div>
@@ -94,7 +92,6 @@ export default {
     Next () {
       gsap.to('.Casting-big-dialog', { display: 'block' })
       localStorage.setItem('userName', this.userName)
-      // this.$router.push('/SmalltestView')
     },
     closeDialog () {
       gsap.to('.Casting-big-dialog', { display: 'none' })
@@ -128,8 +125,8 @@ export default {
   border-radius: 30px;
   border: 0px solid black;
 }
-.emp2-name{
-    bottom:40%;
+.emp2-Casting-name{
+    bottom:35%;
     right:13%;
     z-index: 20;
     background-color: white;
@@ -138,7 +135,7 @@ export default {
     padding: 10px 53px;
     font-size: 24px;
 }
-.emp2-1{
+.emp2-Casting{
     bottom:-5%;
     right:15%;
     z-index: 10;
