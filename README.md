@@ -8,10 +8,10 @@
 4.下載證書截圖:下載img格式的證書檔案  
 
 ## 資料夾說明  
-● CastingView.vue:輸入名字與選擇角色頁面 
-● GradView.vue:下載證書截圖與回到首頁 
-● OpeningView.vue:開場首頁 
-● Smalltest.vue:Scrum流程認識  
+● CastingView.vue:輸入名字與選擇角色頁面  
+● GradView.vue:下載證書截圖與回到首頁  
+● OpeningView.vue:開場首頁  
+● Smalltest.vue:Scrum流程認識    
 
 ## 使用技術  
 ● Vue Cli  
